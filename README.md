@@ -25,7 +25,27 @@ take down the OS1 server via a fork bomb, you'll get a minor scolding. But if
 you accidentally take down any of the other OSU servers, your grade will be
 severely penalized.
 
-<!--TODO mention of the starter code that prevents forkbombs-->
+That said, `main.c` (in this repository) comes with a bit
+of *experimental* code that
+enables a resource limit for Small Shell and its descendants. This causes
+`fork()` calls to fail if the number of living threads associated with your
+user account is greater than or equal to N, where N is 30 plus the number
+of living threads under your account at the moment Small Shell is started.
+The intention of this is to prevent fork bombs. Please don't mess with this
+code.
+
+> [!NOTE]
+  This limit includes main threads from zombie processes, so make sure to
+  clean up your child processes via `waitpid()` as directed in this assignment
+  document.
+
+> [!TIP]
+  When `fork()` fails due to hitting the thread limit (e.g., because you
+  aren't properly cleaning up your child processes), it will return -1
+  in the parent process, and no child process will be created. For debugging
+  purposes, it'd be a good idea to explicitly check for this using an if
+  statement following your `fork()` calls. Otherwise, if `fork()` fails
+  silently, and you don't notice, it will be hard to diagnose.
 
 ## Assignment
 
