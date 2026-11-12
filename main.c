@@ -42,8 +42,8 @@ void set_thread_limit(int bound) {
 		sprintf(command, "ps --no-headers auxwwwm | awk '$2 == \"-\" { "
 			"print $1 }' | grep %s | wc -l", user);
 		dup2(pipe_fds[1], STDOUT_FILENO);
-		system(command);
 		close(pipe_fds[1]);
+		system(command);
 		exit(0);
 	} else if (fork_result > 0) {
 		// Retrieve result of pgrep -u USER -c from the pipe, written by the
